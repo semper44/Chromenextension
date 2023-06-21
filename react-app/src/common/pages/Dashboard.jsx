@@ -25,7 +25,7 @@ function Dashboard() {
       .post(`${import.meta.env.VITE_REACT_APP_MAIN_ENDPOINT}userDetails`, data)
       .then((returnedData) => returnedData.data);
   };
-  console.log(toggleTransfer);
+
 
   const {
     isLoading,
@@ -34,7 +34,30 @@ function Dashboard() {
     error,
     refetch,
   } = useQuery({ queryKey: ["userAccounts"], queryFn: fetchAccount });
-  console.log(queryUsersAccount);
+
+
+
+  const fetchMainAccount = async () => {
+    const data = { usersAccount:"0.0.14022139"};
+    return await axios
+      .post(`${import.meta.env.VITE_REACT_APP_MAIN_ENDPOINT}userDetails`, data)
+      .then((returnedData) => returnedData.data);
+  };
+
+  const {
+    isLoading:mainLoading,
+    isError:mainisError,
+    data: querymainUsersAccount,
+    error:mainError,
+    refetch:mainFetch,
+  } = useQuery({ queryKey: ["userAccounts"], queryFn:  fetchMainAccount });
+
+  const mainUsersData = querymainUsersAccount?.userAccountInfo;
+
+
+
+
+
 
   useEffect(() => {
     (async () => {
@@ -47,19 +70,21 @@ function Dashboard() {
     })();
   }, [saveUsersDetails]);
   const usersData = queryUsersAccount?.userAccountInfo;
-  const usersID = saveUsersDetails.valueData.accountID;
-
+  const usersID = saveUsersDetails?.valueData.accountID;
+  // 0.0.14766672
   const makeTransfer = async () => {
     setTokenTransfer((previousData) => ({
       ...previousData,
-      tokenFrom: usersID,
+      tokenFrom:import.meta.env.VITE_MY_ACCOUNT_ID,
     }));
     if (
-      tokenTransfer.tokenTo == "" ||
-      tokenTransfer.tokenFrom == "" ||
-      tokenTransfer.amount == ""
+      tokenTransfer?.tokenTo == "" ||
+      tokenTransfer?.tokenFrom == "" ||
+      tokenTransfer?.amount == ""
     ) {
-      toast("input can  not be Empty", {
+
+    
+     toast("input can  not be Empty", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -69,17 +94,20 @@ function Dashboard() {
         progress: undefined,
         theme: "dark",
       });
-    }
 
+    }else{
+
+    
     const transferData = {
-      senderAddress: tokenTransfer.tokenFrom,
-      receiverAddress: tokenTransfer.tokenTo,
-      amount: tokenTransfer.amount,
+      senderAddress: import.meta.env.VITE_MY_ACCOUNT_ID,
+      receiverAddress: tokenTransfer?.tokenTo,
+      amount: tokenTransfer?.amount,
     };
     const response = await axios.post(
       `${import.meta.env.VITE_REACT_APP_MAIN_ENDPOINT}transfer`,
       transferData
     );
+    console.log(response, tokenTransfer)
     if (response.status == 200) {
       toast(
         `🤝 transfer of ${tokenTransfer.amount} to ${tokenTransfer.tokenTo} `,
@@ -95,14 +123,65 @@ function Dashboard() {
         }
       );
     }
+    }
   };
 
   return (
     <MainLayout className="">
+           { (mainLoading)?(<div>Loading...</div>) : (<div className="container w-full lg:w-7/12">
+            <div className="container w-full flex justify-center items-center text-xl font-bold">Main Account</div>
+           
+            <div className="flex justify-center flex-col w-full container items-center">
+          <div className="border min-h-[50px] border-orange-300 justify-center space-y-3 lg:justify-between space-x-4 items-center w-11/12   rounded-full my-3 flex flex-row ">
+            <div className="text-xs w-fit text-center">
+              {"Account Id:  "}{" "}
+              <span className="font-semibold text-sm w-fit">
+                {mainUsersData.accountId}
+              </span>
+            </div>
+            <div className="text-xs w-fit text-center pb-4 ">
+              {"Balances: "}{" "}
+              <span className="font-semibold text-sm w-fit">
+                {mainUsersData.balance}
+              </span>
+            </div>
+            <div className="text-xs w-fit text-center capitalize pb-4 ">
+              {"ledgerId: "}{" "}
+              <span className="font-semibold text-sm w-fit">
+                {mainUsersData.ledgerId}
+              </span>
+            </div>
+          </div>
+          <div className="border min-h-[50px] border-orange-300 justify-between flex-col items-center w-11/12 lg:w-9/12  rounded-full my-3 flex px-3">
+            <div className="text-sm w-fit capitalize">
+              {"maxAutomaticTokenAssociations:  "}{" "}
+              <span className="font-semibold text-lg">
+                {mainUsersData.maxAutomaticTokenAssociations}
+              </span>
+            </div>
+            <div className="">
+              {"ownedNfts: "}{" "}
+              <span className="font-semibold text-xl">
+                {mainUsersData.ownedNfts}
+              </span>
+            </div>
+          </div>
+          {/* proxyAccountId: null */}
+          <div className="w-full flex justify-end items-center mt-10">
+               <button className="w-[120px] h-8 cursor-pointer outline-none text-sm text-white bg-orange-500">Enter Page</button>
+          </div>
+        </div>
+    </div>)
+    }
+
+
+
+
       {isLoading ? (
         "loading..."
       ) : (
-        <div className="flex justify-center flex-col w-full container items-center">
+        <div className="flex justify-center flex-col w-full container items-center mt-10">
+          <div className="text-xl font-bold">{`Users Account ${usersData.accountId}`}</div>
           <div className="border min-h-[50px] border-orange-300 justify-center space-y-3 lg:justify-between space-x-4 items-center w-11/12   rounded-full my-3 flex flex-row ">
             <div className="text-xs w-fit text-center">
               {"Account Id:  "}{" "}
@@ -138,11 +217,14 @@ function Dashboard() {
             </div>
           </div>
           {/* proxyAccountId: null */}
+          <div className="w-full flex justify-end items-center mt-10">
+               <button className="w-[120px] h-8 cursor-pointer outline-none text-sm text-white bg-orange-500">Enter Page</button>
+          </div>
           <div className="mt-5 w-full text-center font-semibold text-xl">
             Account History
           </div>
           <div className="w-9/12 overflow-x-scroll  lg:w-full px-10 ">
-            <table border>
+            <table>
               <thead>
                 <tr className="">
                   <th rowSpan={2} className="capitalize  px-5">
