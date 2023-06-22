@@ -85,6 +85,11 @@ function Nfts() {
       `${import.meta.env.VITE_REACT_APP_MAIN_ENDPOINT}saveNft`,
       saveNfts
     );
+    console.log(user_saveNft.status)
+if(user_saveNft.status == 200){
+   alert("Checking for availability")
+   window.location.reload();
+}
   };
 
   const viewNftPage = async (nft_items) => {
