@@ -21,6 +21,7 @@ const {
   NftId,
   AccountInfoQuery,
   Mnemonic,
+  AccountUpdateTransaction,
   FileContentsQuery,
   ExchangeRates,
   AccountDeleteTransaction,
@@ -82,8 +83,6 @@ const createAccount = async (req, res) => {
   const key = await mnemonic.toStandardEd25519PrivateKey("", 0);
   console.log(`private key = ${key.toString()}`);
   console.log(`public key = ${key.publicKey.toString()}`);
-
-  // [...]
 
   let transaction = await new AccountCreateTransaction()
     .setInitialBalance(new Hbar(1000)) // 10 h
@@ -147,7 +146,6 @@ const getUsersAvailableNFTs = async (req, res) => {
     .execute(client);
 
   res.status(200).json({ usersNFTInfo: nftInfos });
-  //v1.4.10
 };
 
 const createSellOrder = async (req, res) => {
@@ -277,17 +275,15 @@ const atomicBuyNFTWithToken = async (req, res) => {
 
 const transferHbar = async (req, res) => {
   const { senderAddress, receiversAddress, amount, privateKey } = req.body;
-  //Create the transfer transaction
 
-  console.log(req.body);
   const addressFrom = AccountId.fromString(senderAddress);
   const privateKeys = PrivateKey.fromString(privateKey);
   const accountWithPadding = await addressPadding(receiversAddress);
 
   const amount_to_number = Number(amount);
   const transaction = new TransferTransaction()
-    .addHbarTransfer(addressFrom, -amount_to_number)
-    .addHbarTransfer(accountWithPadding, amount_to_number)
+    .addHbarTransfer(addressFrom, new Hbar(-amount_to_number))
+    .addHbarTransfer(accountWithPadding, new Hbar(amount_to_number))
     .freezeWith(client);
 
   const transferTxSign = await transaction.sign(privateKeys);
@@ -335,13 +331,6 @@ const registration = async (req, res) => {
       res.status(200).json({ message: "Users Registration successful" });
     }
   );
-  // const createRegister = new mongoRegistration({
-  //   password,
-  //   walletAddress,
-  //   privateKey,
-  //   seedPhrase,
-  // });
-  // createRegister.save();
 };
 
 const saveUsersNft = async (req, res) => {
@@ -412,12 +401,8 @@ const usersLogin = async (req, res) => {
             });
         }
       );
-
-      // res.status(200).json({ message: "password checked" ,status :results });
     }
   );
-  // const loginCheck = await mongoRegistration.findOne({ password }).exec();
-  // if (!loginCheck)
 };
 
 const transferNFT = async (req, res) => {
@@ -427,20 +412,34 @@ const transferNFT = async (req, res) => {
     receiverId,
     token_serial_number,
     sendersPrivateKey,
+    receiverKeys,
   } = req.body;
-  // Check the balance before the transfer for the treasury account
-  // console.log(senderId , senderNFTId , receiverId , token_serial_number , sendersPrivateKey)
 
-  // var balanceCheckTx = await new AccountBalanceQuery().setAccountId(senderId).execute(client);
+  console.log(req.body);
+  const senderID = AccountId.fromString(senderId);
+  const receiversID = AccountId.fromString(receiverId);
+  const operatorID = PrivateKey.fromString(sendersPrivateKey);
+  const token_number = Number(token_serial_number);
+  const receiveKeys = PrivateKey.fromString(receiverKeys);
 
-  // // Check the balance before the transfer for Alice's account
-  // var balanceCheckTx = await new AccountBalanceQuery().setAccountId(receiverId).execute(client);
+  let associate = await new AccountUpdateTransaction()
+    .setAccountId(receiversID)
+    .setMaxAutomaticTokenAssociations(100)
+    .freezeWith(client)
+    .sign(receiveKeys);
+  let associateTxSub = await associate.execute(client);
+  let associat = await associateTxSub.getReceipt(client);
+  console.log(`Alice NFT Auto-Association: ${associat.status} \n`);
 
-  const transaction = new TransferTransaction()
-    .addTokenTransfer(senderNFTId, senderId, -Number(token_serial_number))
-    .addTokenTransfer(senderNFTId, receiverId, Number(token_serial_number))
-    .freezeWith(client);
-
+  let tokenTransferTx = await new TransferTransaction()
+    .addNftTransfer(senderNFTId, token_number, senderID, receiversID)
+    .freezeWith(client)
+    .sign(operatorID);
+  let tokenTransferSubmit = await tokenTransferTx.execute(client);
+  let tokenTransferRx = await tokenTransferSubmit.getReceipt(client);
+  console.log(
+    `\n NFT transfer Treasury->Alice status: ${tokenTransferRx.status.toString()} \n`
+  );
   res.status(200).json({ message: "transfered successfuly" });
 };
 
@@ -481,12 +480,8 @@ const listNft = (req, res) => {
       } else {
         res.json({ message: "Already listed" });
       }
-      // res.status(200).json({results});
     }
   );
-  // connection.query("INSERT INTO saleorder(usersId, senderAccount, nftToken,userTokenId, senderAccountKey, requestAmount, receiverAccount, status, nftImage) VALUES (?,?,?,?,?,?,?,?,?)" ,[usersId,senderAccount,nftToken,userTokenId, senderAccountKey,requestAmount,receiverAccount,status,nftImage], function (error , results , fields){
-  //  res.status(200).json({message:"Listed successfully"})
-  // })
 };
 
 const allListing = async (req, res) => {
