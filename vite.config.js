@@ -1,10 +1,10 @@
 /* eslint-disable no-undef */
-import { defineConfig } from "vite";
+import { defineConfig, transformWithEsbuild } from "vite";
 import react from "@vitejs/plugin-react";
 import copy from "rollup-plugin-copy";
 import babel from 'vite-plugin-babel';
 import { nodePolyfills } from 'vite-plugin-node-polyfills'
-// import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfill'
+import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfill'
 
 
 
@@ -14,6 +14,21 @@ export default defineConfig({
   plugins: [
     react(),
     babel(),
+    {
+      name: 'load+transform-js-files-as-jsx',
+      async transform(code, id) {
+        if (!id.match(/src\/.*\.js$/)) {
+          return null;
+        }
+
+        // Use the exposed transform from vite, instead of directly
+        // transforming with esbuild
+        return transformWithEsbuild(code, id, {
+          loader: 'jsx',
+          jsx: 'automatic', // 👈 this is important
+        });
+      },
+    },
     copy({
       targets: [
         { src: "src/manifest.json", dest: "dist" },
@@ -38,16 +53,19 @@ export default defineConfig({
   ],
   optimizeDeps: {
     esbuildOptions: {
-        // Node.js global to browser globalThis
-        define: {
-            global: 'globalThis'
-        },
-        // Enable esbuild polyfill plugins
-        // plugins: [
-        //     NodeGlobalsPolyfillPlugin({
-        //         buffer: true
-        //     })
-        // ]
+      // Node.js global to browser globalThis
+      define: {
+        global: 'globalThis'
+      },
+      loader: {
+        '.js': 'jsx',
+      },
+      // Enable esbuild polyfill plugins
+      // plugins: [
+      //     NodeGlobalsPolyfillPlugin({
+      //         buffer: true
+      //     })
+      // ]
     }
   },
   build: {
@@ -61,4 +79,5 @@ export default defineConfig({
       }
     },
   },
+
 });

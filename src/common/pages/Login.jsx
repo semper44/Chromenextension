@@ -32,16 +32,13 @@ function Login() {
   }, [saveUsersDetails]);
 
   const login = async () => {
-    if (
-      getLogin.password !== "" &&
-      getLogin.confirmPassword !== "" &&
-      getLogin.password == getLogin.confirmPassword
-    ) {
+    if (getLogin.password !== "" && getLogin.confirmPassword !== "" && getLogin.password == getLogin.confirmPassword) {
       const response = await axios
         .post(`${import.meta.env.VITE_REACT_APP_MAIN_ENDPOINT}login`, {
           password: getLogin.password,
         })
         .then((returnedData) => returnedData.data);
+      console.log(response)
       if (response.status == 0) {
         toast("🤝  User not found", {
           position: "top-right",
@@ -80,30 +77,40 @@ function Login() {
     <MainLayout>
       <GlobalStyling />
       <form className="w-full h-full">
-        <div className="w-full text-center text-white text-xl font-bold py-8 px-2 border-b border-slate-300/20">Login Page</div>
-        
-        <div className="w-full h-[390px] flex items-center justify-center flex-col">
-            <InputsWithValidation
+        <div className=" h-fit w-full text-center text-rgb(0,123,255) tracking-wide text-lg font-bold py-3 px-2 border-b border-slate-300 text-white">
+          LOGIN
+        </div>
+
+        <div className="text-sm my-2 text-center tracking-wide font-semibold text-[#f3cb17] bg-[#161616] rounded-lg p-2">
+          Create a new account to continue with our application
+        </div>
+
+        <div className="w-full h-fit flex items-center justify-center flex-col">
+          <InputsWithValidation
             inputName={"Enter Password"}
             setInputValue={(e) =>
-                setGetLogin((previousData) => ({
+              setGetLogin((previousData) => ({
                 ...previousData,
                 password: e.target.value,
-                }))
+              }))
             }
-            />
-            <InputsWithValidation
+          />
+          <InputsWithValidation
             inputName={"Confirm Password"}
             setInputValue={(e) =>
-                setGetLogin((previousData) => ({
+              setGetLogin((previousData) => ({
                 ...previousData,
                 confirmPassword: e.target.value,
-                }))
+              }))
             }
-            />
-        <div className="w-fit text-center h-fit text-md pt-4 font-semibold tracking-wider text-white" onClick={() => login()}>
-            Login
-        </div>
+          />
+          
+          <div
+            onClick={() => login()}
+            className={"w-[90%] h-fit cursor-pointer mt-4 bg-[#03f584] py-[10px] px-3 rounded-md text-md font-semibold text-white text-center"}
+          >
+            LOGIN
+          </div>
         </div>
       </form>
     </MainLayout>

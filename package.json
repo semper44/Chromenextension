@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite ",
     "build": "vite build",
     "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
@@ -25,6 +25,7 @@
     "react-copy-to-clipboard": "^5.1.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.9.0",
+    "react-qr-code": "^2.0.11",
     "react-router-dom": "^6.11.2",
     "react-spring-bottom-sheet": "^3.4.1",
     "react-toastify": "^9.1.3",

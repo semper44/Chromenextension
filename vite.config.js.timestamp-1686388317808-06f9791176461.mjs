@@ -2,13 +2,13 @@
 import { defineConfig } from "file:///C:/Users/HP-PC/Desktop/NewHederaTailwind-main/node_modules/vite/dist/node/index.js";
 import react from "file:///C:/Users/HP-PC/Desktop/NewHederaTailwind-main/node_modules/@vitejs/plugin-react/dist/index.mjs";
 import copy from "file:///C:/Users/HP-PC/Desktop/NewHederaTailwind-main/node_modules/rollup-plugin-copy/dist/index.commonjs.js";
-// import babel from 'vite-plugin-babel';
+import babel from 'vite-plugin-babel';
 
 
 var vite_config_default = defineConfig({
   plugins: [
     react(),
-    // babel(),
+    babel(),
     copy({
       targets: [
         { src: "src/manifest.json", dest: "dist" },
@@ -19,7 +19,7 @@ var vite_config_default = defineConfig({
   ],
   build: {
     rollupOptions: {
-      input: ["index.html", "src/background.ts", "src/contentScript.ts"],
+      input: ["index.html", "src/background.ts", "src/contentScript.ts" ],
       output: {
         chunkFileNames: "[name].[hash].js",
         assetFileNames: "[name].[hash].[ext]",

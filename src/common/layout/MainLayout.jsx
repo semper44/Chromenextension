@@ -7,7 +7,7 @@ import Footer from './Footer'
 
 function MainLayout({children}) {
   return (
-      <S.MainContainer className='container w-[360px] h-[600px]'>
+      <S.MainContainer className='container w-[330px] h-[640px]'>
           <div className='w-full h-full backdrop-blur-2xl bg-black/80 px-2'> 
           {children}
           <Footer />

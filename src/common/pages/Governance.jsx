@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import MainLayout from '../layout/MainLayout'
 import * as S from './style/Styles'
 import { GlobalStyling } from '../globalStyles/Global'
@@ -11,118 +11,120 @@ import { MdArrowBack, MdClose } from "react-icons/md";
 import NavBar from '../layout/NavBar';
 import { BottomSheet } from 'react-spring-bottom-sheet'
 import { useNavigate } from 'react-router-dom';
-
+const availableTokens = [
+    {
+        name: "HEDERA",
+        completed: 30,
+        pricing: 0.00001234,
+        amount: 89.4
+    },
+    {
+        name: "SHIBA",
+        completed: 40,
+        pricing: 0.00001234,
+        amount: 66.4
+    },
+    {
+        name: "CANON",
+        completed: 50,
+        pricing: 0.00001234,
+        amount: 29.4
+    },
+    {
+        name: "CREEPS",
+        completed: 80,
+        pricing: 0.00001234,
+        amount: 56.4
+    }
+]
 function Governance() {
-    const[showInput, setShowInput]=useState(false)
-
-
-    // function showFn(){
-    //     setShow(!show)
-    // }
     const navigate = useNavigate();
+    const [show, setShow] = useState(false)
+    const [filterTokens, setfilterTokens] = useState([]);
+    const [showSendSheet, setShowSendSheet] = useState(false)
+    function showFn() {
+        setShow(!show);
+    }
+
+    useEffect(() => {
+        setfilterTokens(availableTokens)
+    }, [availableTokens])
+
+    const showMatchedTokens = (event) => {
+        const { value } = event.target;
+        const matched = availableTokens.filter((token) => token.name.toLowerCase().includes(value.toLowerCase()))
+        setfilterTokens(matched)
+    }
   return (
       <MainLayout>
-          <NavBar title="Governance" backArrow={<MdArrowBack size={18} />}  />
-          <S.ScrollBar className='w-full h-[450px] overflow-y-scroll pl-4'>
-              <GlobalStyling />
-              <div className="w-full h-fit py-2">
-                <div className="uppercase text-xs text-white font-semibold tracking-wider pt-7">Proposals</div>
-                <div className="capitalize font-light  text-sm text-white  tracking-wider pt-3">List of proposals</div>
-                <div className="border border-gray-300 text-white  rounded-full mt-3">
-                <input className='w-10/12 outline-none capitalize bg-transparent text-white h-10 rounded-md pl-3 ' placeholder='search...'/>
-
-                </div>
+          <NavBar title="Governance" backArrow={<MdArrowBack size={18} />} />
+          <GlobalStyling />
+          <div className="w-full h-fit py-2 px-2">
+              {/* <div className="uppercase text-xs text-white font-semibold tracking-wider pt-7">Proposals</div> */}
+              {/* <div className="capitalize font-light  text-sm text-white  tracking-wider pt-3">List of proposals</div> */}
+              <div className="border border-gray-300 text-white  rounded-full mt-3">
+                  <input onKeyUp={showMatchedTokens} className='w-10/12 outline-none capitalize bg-transparent text-white h-10 rounded-md pl-3 ' placeholder='search...' />
               </div>
-              
-              <div onClick={()=>setShowInput(!showInput)} className='cursor-pointer h-fit w-full  pop-up bg-black/60 bg-opacity-80 backdrop-filter  rounded-lg p-4 mt-4 px-4 '>
-                  <div className="w-full uppercase px-2 font-semibold flex justify-start items-center py-1 text-white">available Tokens ({<div className='text-blue-600/70 font-bold ' >{1}</div>})</div>
-                   {/* items display section */}
-                  <div className="w-full h-fit justify-center items-center mt-3">
-                      <div className="w-full h-fit flex justify-between items-center">
-                        <div className="flex flex-row justify-center items-center space-x-2">
-                            <div className='h-fit w-fit'><img src="../hederaImage.png" className='h-10 w-10 rounded-full' /></div>
-                            <div className="w-fit h-fit text-sm tracking-wide font-semibold text-white">Hedera Token</div>    
-                        </div>
-                          <div className="flex justify-center items-center space-x-2">
-                              <span className="w-fit h-fit text-sm tracking-wide font-semibold text-white">0.00</span>
-                              <span className="w-fit h-fit text-sm tracking-wide font-semibold text-blue-600/90">HBAR</span>
+          </div>
+
+          {/* distribution panel */}
+          <div id='TOKENS' className='w-full py-2 px-4 flex items-center justify-between'>
+              <p className=' flex items-center text-whtie font-bold text-[#fff]'>AVAILABLE TOKENS <p className='mx-1 px-[5px] rounded-[3px] bg-[#e7b3062a] text-[#ffc400] text-[12px]'>{availableTokens.length}</p>  </p>
+              <div className='h-fit w-fit p-1 px-4 gap-2 transition-[.4s] flex items-center text-white hover:cursor-pointer hover:bg-[#191b1a] hover:scale-[0.95] border-[#545454] border-[2px] rounded-[10px]'></div>
+          </div>
+
+          <S.ScrollBar className='w-full h-[400px] flex flex-col items-center overflow-y-scroll'>
+              <div className='flex w-full flex-col gap-2'>
+                  {filterTokens.map((token) =>
+                      <div onClick={() => setShowSendSheet(!showSendSheet)} className='h-[100px] w-full flex items-center p-[6px] border-[2px] border-[#2a2a2a] rounded-[20px] bg-[#121212] first-letter:first-line:marker:'>
+                          <div className='h-[85px] w-[47px] flex items-center justify-center bg-[#232323] rounded-[15px]'>
+                              <img src='../hederaImage.png' className='h-[30px] w-[30px] object-contain' />
+                          </div>
+                          <div className='flex flex-col flex-1 h-full'>
+                              <div className="flex items-center justify-between px-3 text-white">
+                                  <h1 className='font-bold'>{token.name} TOKEN</h1>
+                                  <p className='text-[#b3b3b3] flex items-baseline font-bold'>$ <p className='text-[12px] ml-1 text-[#fff] font-bold'>{token.amount}</p> </p>
+                              </div>
+                              <div className='flex flex-1 items-center justify-center'>
+                                  <div className='h-[90%] w-[94%] flex flex-col px-1 items-center bg-[#26262500] rounded-lg'>
+                                      <ProgressBar completed={token.completed} value={70 / 100} />
+                                      <div className='h-full w-full flex items-end text-white'>
+                                          <p className='font-bold'>{token.pricing}</p> <p className='ml-[5px] text-[14px] text-[#27c9a6]'>HBAR</p>
+                                      </div>
+                                  </div>
+                              </div>
                           </div>
                       </div>
-                      <div className="pt-3"><ProgressBar bgcolor={"[#e11584]/90"} completed={35} value={70/100}/> </div>                                  
-                  </div>
-                  <div className="w-full h-fit border-t border-t-slate-200 flex justify-start items-center pt-1 mt-5">
-                 </div> 
-
+                  )}
               </div>
-              <div onClick={()=>setShowInput(!showInput)} className='cursor-pointer h-fit w-full  pop-up bg-black/60 bg-opacity-80 backdrop-filter  rounded-lg p-4 mt-4 px-4 '>
-                  <div className="w-full uppercase px-2 font-semibold flex justify-start items-center py-1 text-white">available Tokens ({<div className='text-blue-600/70 font-bold ' >{1}</div>})</div>
-                   {/* items display section */}
-                  <div className="w-full h-fit justify-center items-center mt-3">
-                      <div className="w-full h-fit flex justify-between items-center">
-                        <div className="flex flex-row justify-center items-center space-x-2">
-                            <div className='h-fit w-fit'><img src="../hederaImage.png" className='h-10 w-10 rounded-full' /></div>
-                            <div className="w-fit h-fit text-sm tracking-wide font-semibold text-white">Hedera Token</div>    
-                        </div>
-                          <div className="flex justify-center items-center space-x-2">
-                              <span className="w-fit h-fit text-sm tracking-wide font-semibold text-white">0.00</span>
-                              <span className="w-fit h-fit text-sm tracking-wide font-semibold text-blue-600/90">HBAR</span>
-                          </div>
-                      </div>
-                      {/* <div className="pt-3"><ProgressBar bgcolor={"[#e11584]/90"} completed={60}/> </div>                                   */}
-                  </div>
-                  <div className="w-full h-fit border-t border-t-slate-200 flex justify-start items-center pt-1 mt-5">
-                 </div> 
-
-              </div>
-              <div onClick={()=>setShowInput(!showInput)} className='cursor-pointer h-fit w-full  pop-up bg-black/60 bg-opacity-80 backdrop-filter  rounded-lg p-4 mt-4 px-4 '>
-                  <div className="w-full uppercase px-2 font-semibold flex justify-start items-center py-1 text-white">available Tokens ({<div className='text-blue-600/70 font-bold ' >{1}</div>})</div>
-                   {/* items display section */}
-                  <div className="w-full h-fit justify-center items-center mt-3">
-                      <div className="w-full h-fit flex justify-between items-center">
-                        <div className="flex flex-row justify-center items-center space-x-2">
-                            <div className='h-fit w-fit'><img src="../hederaImage.png" className='h-10 w-10 rounded-full' /></div>
-                            <div className="w-fit h-fit text-sm tracking-wide font-semibold text-white">Hedera Token</div>    
-                        </div>
-                          <div className="flex justify-center items-center space-x-2">
-                              <span className="w-fit h-fit text-sm tracking-wide font-semibold text-white">0.00</span>
-                              <span className="w-fit h-fit text-sm tracking-wide font-semibold text-blue-600/90">HBAR</span>
-                          </div>
-                      </div>
-                      {/* <div className="pt-3"><ProgressBar bgcolor={"[#e11584]/90"} completed={60}/> </div>                                   */}
-                  </div>
-                  <div className="w-full h-fit border-t border-t-slate-200 flex justify-start items-center pt-1 mt-5">
-                 </div> 
-
-              </div>
-      
           </S.ScrollBar>
 
-          <BottomSheet skipInitialTransition open={showInput} snapPoints={({ minHeight, maxHeight }) => [minHeight, maxHeight / 0.7]} className='--rsbs-bg-transparent' >
-            <div className="w-full h-full backdrop-blur-2xl bg-black/80 px-2 text-center">
-                <div className='w-full h-fit '>     
-                    <div  className='h-fit w-full border-b border-slate-300/20 flex items-center py-4'>
-                        <div onClick={()=>setShowInput(false)} className='w-8 p-2 h-8 ml-1 mr-14 flex justify-center items-center border border-slate-300/50 rounded-full '><MdClose size={20} className='text-white cursor-pointer' /></div>                    
-                    </div>
-                    <div className="w-full uppercase px-2 pt-3 font-bold text-center text-white">Would you like this feature </div>
-                    <div className="w-full flex justify-start items-center py-1 pt-2">
-                        <span className="w-fit h-fit text-sm tracking-wide font-semibold text-gray-600/40">Voting starts</span>
-                    </div>    
-                    <div className="w-full flex justify-start items-center py-1">
-                        <span className="w-fit h-fit text-sm tracking-wide font-semibold text-gray-600/40">Voting ends</span>
-                    </div>    
-                </div>
+          <BottomSheet skipInitialTransition open={showSendSheet} snapPoints={({ minHeight, maxHeight }) => [minHeight, maxHeight / 0.7]} className='--rsbs-bg-transparent' >
+              <div className='bg-[#000000] rounded-2xl'>
+                  <div className='h-14 border-b border-b-slate-200 py-[1px] w-full flex items-center relative'>
+                      <div onClick={() => setShowSendSheet(!showSendSheet)} className='absolute left-[15px] translate-y-[-50%] top-[50%] w-[30px] h-[30px] flex justify-center items-center border cursor-pointer border-slate-300/50 rounded-full '>
+                          <MdClose size={20} className='text-white' />
+                      </div>
+                      <div className='flex-1 flex items-center justify-center text-center text-lg tracking-wider font-bold text-white'>VOTE</div>
+                  </div>
 
-                <div className="w-full flex items-center justify-center pb-3">
-                    <ProgressCircle percent={75} />
-                </div>
+                  <div className='h-[89px] w-full py-3 flex items-center justify-center'>
+                      <p className='text-white'>WOULD YOU LIKE THIS FUTURE</p>
+                  </div>
 
-                <div className="w-full flex flex-col items-center justify-center flex items-center justify-center py-3 ">
-                    <div className="w-[80%] h-fit text-md text-center font-semibold tracking-wider text-white bg-[#e11584]/90 mb-3 p-3 rounded-md cursor-pointer">upVote</div>
-                    <div className="w-[80%] h-fit text-md text-center font-semibold tracking-wider text-white bg-[#e11584]/90 mb-3 p-3 rounded-md cursor-pointer">downVote</div>
-                </div>
-            </div>
-            </BottomSheet>
-    </MainLayout>
+                  <div className='h-fit w-full pb-8 flex items-center justify-center'>
+                      <div className="h-fit flex flex-col gap-[10px] w-[90%] text-white p-2 rounded-xl">
+                          <button className='h-fit py-3 w-full rounded-lg bg-[#27c9a6]'>
+                              UPVOTE
+                          </button>
+                          <button className='h-fit py-3 w-full rounded-lg bg-[#020f8a]'>
+                              DOWNVOTE
+                          </button>
+                      </div>
+                  </div>
+              </div>
+          </BottomSheet>
+      </MainLayout>
   )
 }
 

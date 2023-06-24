@@ -1,0 +1,107 @@
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 232.58 239.79">
+  <defs>
+    <style>
+      .cls-1,
+      .cls-3 {
+        fill: none;
+        stroke-miterlimit: 10;
+      }
+
+      .cls-1 {
+        stroke-width: 4px;
+        stroke: url(#linear-gradient);
+      }
+
+      .cls-2 {
+        fill: url(#linear-gradient-2);
+      }
+
+      .cls-3 {
+        stroke: #e71b5a;
+        stroke-width: 3px;
+      }
+
+      .cls-4 {
+        fill: url(#linear-gradient-3);
+      }
+
+      .cls-5 {
+        font-size: 37px;
+        font-family: Lato-Black, Lato;
+        font-weight: 800;
+        letter-spacing: 0.02em;
+      }
+
+      .cls-6 {
+        fill: url(#linear-gradient-4);
+      }
+
+      .cls-7 {
+        fill: url(#linear-gradient-5);
+      }
+    </style>
+    <linearGradient id="linear-gradient" x1="310.04" y1="157.47" x2="176.71" y2="278.99" gradientUnits="userSpaceOnUse">
+      <stop offset="0.22" stop-color="#54c2ef" />
+      <stop offset="0.27" stop-color="#57beec" />
+      <stop offset="0.32" stop-color="#62b3e2" />
+      <stop offset="0.36" stop-color="#73a0d1" />
+      <stop offset="0.4" stop-color="#8b86b9" />
+      <stop offset="0.45" stop-color="#aa649a" />
+      <stop offset="0.49" stop-color="#cf3b75" />
+      <stop offset="0.52" stop-color="#ed1a58" />
+      <stop offset="0.52" stop-color="#e51b5a" />
+      <stop offset="0.57" stop-color="#b22169" />
+      <stop offset="0.62" stop-color="#872775" />
+      <stop offset="0.67" stop-color="#662b7f" />
+      <stop offset="0.71" stop-color="#4e2e85" />
+      <stop offset="0.76" stop-color="#402f8a" />
+      <stop offset="0.79" stop-color="#3b308b" />
+    </linearGradient>
+    <linearGradient id="linear-gradient-2" x1="247.04" y1="176.59" x2="242.24" y2="270.67" gradientUnits="userSpaceOnUse">
+      <stop offset="0.12" stop-color="#54c2ef" />
+      <stop offset="0.17" stop-color="#68acdb" />
+      <stop offset="0.29" stop-color="#9c73a8" />
+      <stop offset="0.46" stop-color="#ed1a58" />
+      <stop offset="0.5" stop-color="#d01e60" />
+      <stop offset="0.6" stop-color="#912572" />
+      <stop offset="0.69" stop-color="#622b80" />
+      <stop offset="0.76" stop-color="#462f88" />
+      <stop offset="0.8" stop-color="#3b308b" />
+    </linearGradient>
+    <linearGradient id="linear-gradient-3" x1="311.2" y1="122.8" x2="277.67" y2="153.36" gradientTransform="matrix(0.95, -0.22, 0.18, 0.96, -22.66, 70.73)" xlink:href="#linear-gradient" />
+    <linearGradient id="linear-gradient-4" x1="104.46" y1="212.75" x2="120.66" y2="199.07" gradientUnits="userSpaceOnUse">
+      <stop offset="0.12" stop-color="#54c2ef" />
+      <stop offset="0.14" stop-color="#67addc" />
+      <stop offset="0.18" stop-color="#9081b4" />
+      <stop offset="0.23" stop-color="#b15c93" />
+      <stop offset="0.28" stop-color="#cb3f79" />
+      <stop offset="0.33" stop-color="#de2a67" />
+      <stop offset="0.37" stop-color="#e91e5c" />
+      <stop offset="0.42" stop-color="#ed1a58" />
+      <stop offset="0.45" stop-color="#d21d60" />
+      <stop offset="0.51" stop-color="#a5236d" />
+      <stop offset="0.57" stop-color="#7f2878" />
+      <stop offset="0.63" stop-color="#612b80" />
+      <stop offset="0.69" stop-color="#4c2e86" />
+      <stop offset="0.74" stop-color="#3f2f8a" />
+      <stop offset="0.8" stop-color="#3b308b" />
+    </linearGradient>
+    <linearGradient id="linear-gradient-5" x1="121.47" y1="235.84" x2="100.59" y2="213.16" gradientUnits="userSpaceOnUse">
+      <stop offset="0.26" stop-color="#54c2ef" />
+      <stop offset="0.3" stop-color="#7999cb" />
+      <stop offset="0.41" stop-color="#cc3e79" />
+      <stop offset="0.46" stop-color="#ed1a58" />
+      <stop offset="0.5" stop-color="#dc1c5d" />
+      <stop offset="0.59" stop-color="#b12169" />
+      <stop offset="0.72" stop-color="#6c2a7d" />
+      <stop offset="0.8" stop-color="#3b308b" />
+    </linearGradient>
+  </defs>
+  <title>hashkeeper 11</title>
+  <path class="cls-1" d="M317.48,170.18l-1.1,22.2a3.61,3.61,0,0,1-3.72,3.42L288.85,195a2.26,2.26,0,0,0-2.31,2.09l-2.22,33.07a2.24,2.24,0,0,0,2.06,2.39l16.8,1.33a3.6,3.6,0,0,1,3.3,3.95L304,262.75a3.6,3.6,0,0,1-3.8,3.23l-18.2-1.1a2.24,2.24,0,0,0-2.36,2l-3.69,30.73a3.6,3.6,0,0,1-3.57,3.17H252.07a3.1,3.1,0,0,1-3.09-3.29l1.81-28a3.93,3.93,0,0,0-3.75-4.18l-16.17-.74a3.93,3.93,0,0,0-4.07,3.39l-4.12,29.7a3.61,3.61,0,0,1-3.57,3.11H200.83a3.59,3.59,0,0,1-3.59-3.78l1.49-30.23a2.23,2.23,0,0,0-2.23-2.35H180.76a3.6,3.6,0,0,1-3.59-3.86l1.64-23a3.6,3.6,0,0,1,3.59-3.34h17.85a2.24,2.24,0,0,0,2.2-1.8l3.33-31a2.23,2.23,0,0,0-2.22-2.48H185.89a3.59,3.59,0,0,1-3.6-3.6l2.23-24.8a3.59,3.59,0,0,1,3.58-3.28h19.27a2.24,2.24,0,0,0,2.22-1.89l4.62-29.63a3.61,3.61,0,0,1,3.56-3h19.16a3.6,3.6,0,0,1,3.58,4l-3.2,27.94a2.24,2.24,0,0,0,2.33,2.49L252,166.5l-16.35,26.23a2.41,2.41,0,0,0-.23,2.1l2.79,7.44.43,1.16a2.17,2.17,0,0,0,2.24,1.41l8.58-.76a2.4,2.4,0,0,0,1.78-1.08l3.9-5.94-.46-3.73,5.5-1.72-.43-6,5-.93,12.59-19.15,12.11.2a5.67,5.67,0,0,0,1.24-.11,2.26,2.26,0,0,0,1.4.51l21.85.26A3.6,3.6,0,0,1,317.48,170.18Z" transform="translate(-131.04 -113.15)" />
+  <path class="cls-2" d="M241.09,183.59c-6.79,2.46-11.87,10.91-4.44,21.07L228.3,243a5.19,5.19,0,0,0,5.07,6.29h20.45a5.18,5.18,0,0,0,5.09-6.13s-5.81-38.26-5.58-38.39c5.35-2.92,5.41-8.76,4.56-12.72C256.19,184,247.28,181.35,241.09,183.59Z" transform="translate(-131.04 -113.15)" />
+  <path class="cls-3" d="M307.18,143.9l-12.49,19a6.26,6.26,0,0,1-4,2.73,5.67,5.67,0,0,1-1.24.11l-12.11-.2-12.59,19.15-5,.93.43,6-5.5,1.72.46,3.73-3.9,5.94a2.4,2.4,0,0,1-1.78,1.08l-8.58.76a2.17,2.17,0,0,1-2.24-1.41l-.43-1.16,20.91-31.83a2.2,2.2,0,0,0,.37-1.21,2,2,0,0,0-.9-1.71,2.11,2.11,0,0,0-2.9.67l-19.1,29.06,1.62,5-2.79-7.44a2.41,2.41,0,0,1,.23-2.1L252,166.5,259.84,154l-6-12.3a6.22,6.22,0,0,1,.6-6.33l13-18.07a6.19,6.19,0,0,1,5.11-2.62l19.7.36a5.64,5.64,0,0,1,4.91,3l10.39,19.6A6.17,6.17,0,0,1,307.18,143.9Z" transform="translate(-131.04 -113.15)" />
+  <path class="cls-4" d="M285.83,132.73l-8.19-.1a3.46,3.46,0,0,0-2.9,1.58l-3,4.52L285.82,148l3.26-5a3.48,3.48,0,0,0,.23-3.44l-3.48-6.84Z" transform="translate(-131.04 -113.15)" /><text class="cls-5" transform="translate(0 229)">HASH EEPER</text>
+  <polygon class="cls-6" points="118.1 202.48 111.86 202.48 104.52 210.19 107.46 214.25 118.1 202.48" />
+  <polygon class="cls-7" points="107.55 216.53 104.52 220.48 111.31 229 118.1 229 107.55 216.53" />
+</svg>
