@@ -25,7 +25,6 @@ function Dashboard() {
       .post(`${import.meta.env.VITE_REACT_APP_MAIN_ENDPOINT}userDetails`, data)
       .then((returnedData) => returnedData.data);
   };
-  console.log(toggleTransfer);
 
   const {
     isLoading,
@@ -34,7 +33,6 @@ function Dashboard() {
     error,
     refetch,
   } = useQuery({ queryKey: ["userAccounts"], queryFn: fetchAccount });
-  console.log(queryUsersAccount);
 
   useEffect(() => {
     (async () => {
@@ -47,17 +45,17 @@ function Dashboard() {
     })();
   }, [saveUsersDetails]);
   const usersData = queryUsersAccount?.userAccountInfo;
-  const usersID = saveUsersDetails.valueData.accountID;
-
+  const usersID = saveUsersDetails?.valueData.accountID;
   const makeTransfer = async () => {
     setTokenTransfer((previousData) => ({
       ...previousData,
-      tokenFrom: usersID,
+      tokenFrom: import.meta.env.VITE_MY_ACCOUNT_ID,
     }));
+
     if (
-      tokenTransfer.tokenTo == "" ||
-      tokenTransfer.tokenFrom == "" ||
-      tokenTransfer.amount == ""
+      tokenTransfer?.tokenTo == "" ||
+      tokenTransfer?.tokenFrom == "" ||
+      tokenTransfer?.amount == ""
     ) {
       toast("input can  not be Empty", {
         position: "top-right",
@@ -69,31 +67,38 @@ function Dashboard() {
         progress: undefined,
         theme: "dark",
       });
-    }
+    } else {
+      if (
+        saveUsersDetails?.valueData.accountID !== undefined &&
+        saveUsersDetails?.valueData.privateKey !== undefined
+      ) {
+        const transferData = {
+          senderAddress: saveUsersDetails?.valueData.accountID,
+          receiversAddress: tokenTransfer?.tokenTo,
+          amount: tokenTransfer?.amount,
+          privateKey: saveUsersDetails?.valueData.privateKey,
+        };
+        const response = await axios.post(
+          `${import.meta.env.VITE_REACT_APP_MAIN_ENDPOINT}transfer`,
+          transferData
+        );
 
-    const transferData = {
-      senderAddress: tokenTransfer.tokenFrom,
-      receiverAddress: tokenTransfer.tokenTo,
-      amount: tokenTransfer.amount,
-    };
-    const response = await axios.post(
-      `${import.meta.env.VITE_REACT_APP_MAIN_ENDPOINT}transfer`,
-      transferData
-    );
-    if (response.status == 200) {
-      toast(
-        `🤝 transfer of ${tokenTransfer.amount} to ${tokenTransfer.tokenTo} `,
-        {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "dark",
+        if (response.status == 200) {
+          toast(
+            `🤝 transfer of ${tokenTransfer.amount} to ${tokenTransfer.tokenTo} `,
+            {
+              position: "top-right",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "dark",
+            }
+          );
         }
-      );
+      }
     }
   };
 
@@ -102,7 +107,8 @@ function Dashboard() {
       {isLoading ? (
         "loading..."
       ) : (
-        <div className="flex justify-center flex-col w-full container items-center">
+        <div className="flex justify-center flex-col w-full container items-center mt-10">
+          <div className="text-xl font-bold">{`Users Account ${usersData.accountId}`}</div>
           <div className="border min-h-[50px] border-orange-300 justify-center space-y-3 lg:justify-between space-x-4 items-center w-11/12   rounded-full my-3 flex flex-row ">
             <div className="text-xs w-fit text-center">
               {"Account Id:  "}{" "}
@@ -138,11 +144,16 @@ function Dashboard() {
             </div>
           </div>
           {/* proxyAccountId: null */}
+          <div className="w-full flex justify-end items-center mt-10">
+            <button className="w-[120px] h-8 cursor-pointer outline-none text-sm text-white bg-orange-500">
+              Enter Page
+            </button>
+          </div>
           <div className="mt-5 w-full text-center font-semibold text-xl">
             Account History
           </div>
           <div className="w-9/12 overflow-x-scroll  lg:w-full px-10 ">
-            <table border>
+            <table>
               <thead>
                 <tr className="">
                   <th rowSpan={2} className="capitalize  px-5">
@@ -196,7 +207,7 @@ function Dashboard() {
                 tokenTo: e.target.value,
               }))
             }
-            placeholder="Transfer to:"
+            placeholder="Transfer to: (Account id)"
             className=" outline-none border border-orange-300 w-11/12 lg:w-7/12 h-8 px-3 rounded-lg my-1"
           />
           <input

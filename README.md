@@ -51,6 +51,7 @@ Empowering Seamless Digital Asset Management
 User Flow
  
 
+
 ![Hedera (1)](https://github.com/chinkauchenna2021/realhashkepper/assets/78275394/1ad163e2-ff07-4638-a74a-e9075613f205)
 
 User Launches the Wallet Extension: 
@@ -192,4 +193,5 @@ UI/UX Design Tools: Utilizing design tools like Figma or Sketch for creating vis
 Responsive Web Design: Ensuring the extension is responsive and accessible across various devices and screen sizes.
 
 
-Figma Link: https://www.figma.com/file/rUBfX2fOfKjrTLD7UMXX6w/Hashkeeper-%2Fcryptocurrency?type=design&node-id=3%3A16368&mode=design&t=fy9D2cAZDFdWIoNF-1
+Figma Link: https://www.figma.com/file/rUBfX2fOfKjrTLD7UMXX6w/Hashkeeper-%2Fcryptocurrency?type=design&node-id=3%3A16368&mode=design&t=fy9D2cAZDFdWIoNF-1# realhashkepper
+for hashkeeper jobs

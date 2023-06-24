@@ -65,26 +65,26 @@ function Home() {
       const fs = require('fs')
       module.exports = fs.readFileSync(require.resolve('./secretes.txt'), 'utf8')
     `;
-
-        if (
-          secreteFiles !== "" &&
-          saveUsersDetails.isLoggedin == true &&
-          Object.keys(saveUsersDetails.valueData).length != 0
+      
+    if (
+          (secreteFiles != "") &&
+         ( saveUsersDetails?.isLoggedin == true) &&
+         ( Object.keys(saveUsersDetails?.valueData).length != 0)
         ) {
           navigate("/dashboard");
         }
 
         if (
-          saveUsersDetails.isLoggedin == false &&
-          secreteFiles != "" &&
-          Object.keys(saveUsersDetails.valueData).length == 0
+         (saveUsersDetails?.isLoggedin == false) &&
+          (secreteFiles != "") &&
+          (Object.keys(saveUsersDetails?.valueData).length == 0)
         ) {
           navigate("/login");
         }
         if (
-          saveUsersDetails.isLoggedin == false &&
-          secreteFiles == "" &&
-          Object.keys(saveUsersDetails.valueData).length == 0
+          (saveUsersDetails?.isLoggedin == false) &&
+         (secreteFiles == "") &&
+         ( Object.keys(saveUsersDetails?.valueData).length == 0)
         ) {
           navigate("/");
         }
@@ -236,8 +236,7 @@ function Home() {
 
   const navigateUsersPage = async () => {
     try {
-      // { password, walletAddress, privateKey, seedPhrase , nickname , email}
-
+  
       if (
         register.email !== "" &&
         register.password !== "" &&
@@ -265,7 +264,7 @@ function Home() {
 
           const secreteFiles = preval`
       const fs = require('fs')
-      module.exports = fs.writeFileSync(require.resolve('./secretes.txt'),'secrete saved');
+      fs.writeFileSync(require.resolve('./secretes.txt'),'secrete saved');
       `;
           toast("🤝 Registration was Successful", {
             position: "top-right",
