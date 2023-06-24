@@ -1,4 +1,4 @@
-###              Project Description: HashKeeper Wallet Extension for Web Browsers
+#              Project Description: HashKeeper Wallet Extension for Web Browsers
 
  ## Introduction
  The HashKeeper Wallet Extension for Web Browsers is an innovative solution designed to enable seamless interaction with the Hadera network directly from within a web browser. Leveraging the power of the Hadera SDK, this extension simplifies the creation and management of public and private keys for users, automating the process and providing a secure environment for handling digital assets. With built-in functionalities such as faucet access, NFT listing, token purchases, and transfers, the extension offers a comprehensive and user-friendly experience for individuals looking to engage with the Hadera network. 
