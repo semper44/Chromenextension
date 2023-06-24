@@ -1,11 +1,13 @@
 const mongoRegistration = require("../modules/schemas/RegisterSchema.js");
-const { setData, getData } = require("../hooks/useStore.js");
-const mysql = require('mysql');
-require("dotenv").config();
+const { addressPadding } = require("../hooks/useStore.js");
+const Moralis = require("moralis").default;
+const { EvmChain } = require("@moralisweb3/common-evm-utils");
+const mysql = require("mysql");
 const {
   Wallet,
   LocalProvider,
   PrivateKey,
+  PublicKey,
   AccountCreateTransaction,
   Hbar,
   AccountId,
@@ -19,6 +21,7 @@ const {
   NftId,
   AccountInfoQuery,
   Mnemonic,
+  AccountUpdateTransaction,
   FileContentsQuery,
   ExchangeRates,
   AccountDeleteTransaction,
@@ -42,14 +45,12 @@ if (!myAccountId || !myPrivateKey) {
   );
 }
 
-
 const connection = mysql.createConnection({
-  host     : 'localhost',
-  user     : 'root',
-  password : '',
-  database : 'HaderaCollection'
-})
-
+  host: "localhost",
+  user: "root",
+  password: "",
+  database: "HaderaCollection",
+});
 
 //Create your Hedera Testnet client
 const client = Client.forTestnet();
@@ -83,10 +84,8 @@ const createAccount = async (req, res) => {
   console.log(`private key = ${key.toString()}`);
   console.log(`public key = ${key.publicKey.toString()}`);
 
-  // [...]
-
   let transaction = await new AccountCreateTransaction()
-    .setInitialBalance(new Hbar(10)) // 10 h
+    .setInitialBalance(new Hbar(1000)) // 10 h
     .setKey(key.publicKey)
     .freezeWithSigner(wallet);
 
@@ -102,7 +101,7 @@ const createAccount = async (req, res) => {
     privateKeys: key.toString(),
     publicKeys: key.publicKey.toString(),
     seedPhrases: mnemonic.toString(),
-    accountID:receipt.accountId.toString()
+    accountID: receipt.accountId.toString(),
   });
 };
 
@@ -133,7 +132,7 @@ const getAccountDetails = async (req, res) => {
 
   //Print the account info to the console
   console.log(accountInfo);
-  res.status(200).json({ userAccountInfo: accountInfo});
+  res.status(200).json({ userAccountInfo: accountInfo });
   //v1.4.4
 };
 
@@ -147,28 +146,51 @@ const getUsersAvailableNFTs = async (req, res) => {
     .execute(client);
 
   res.status(200).json({ usersNFTInfo: nftInfos });
-  //v1.4.10
 };
 
-
-const createSellOrder = async (req,res) => {
-  const { senderAccount, userTokenId, nftToken, password, senderAccountKey, requestAmount } = req.body
-    connection.query("SELECT * FROM userscollections WHERE password = ?", [password], function (error, results, fields) {
-      if (error) return res.status(404).json({ message: "error occurred"});
+const createSellOrder = async (req, res) => {
+  const {
+    senderAccount,
+    userTokenId,
+    nftToken,
+    password,
+    senderAccountKey,
+    requestAmount,
+  } = req.body;
+  connection.query(
+    "SELECT * FROM userscollections WHERE password = ?",
+    [password],
+    function (error, results, fields) {
+      if (error) return res.status(404).json({ message: "error occurred" });
       const userMainID = results[0].id;
-      console.log(userMainID)
-      if (!userMainID) return res.status(404).json({ message: "users id not set" });
-        connection.query('INSERT INTO saleorder(usersId, senderAccount, nftToken, userTokenId, senderAccountKey, requestAmount,receiverAccount , status) VALUES(?,?,?,?,?,?,?,?)',
-          [userMainID, senderAccount, nftToken, userTokenId, senderAccountKey, requestAmount, "0X0000", 0]
-          ,
-          function (error, results, fields) {
-            if (error) return res.status(404).json({ message: "encountered error while inserting in SALES-ORDER" })
-            res.status(200).json({message:"sent successfully"});
-            }); 
-    })   
-
-}
-
+      console.log(userMainID);
+      if (!userMainID)
+        return res.status(404).json({ message: "users id not set" });
+      connection.query(
+        "INSERT INTO saleorder(usersId, senderAccount, nftToken, userTokenId, senderAccountKey, requestAmount,receiverAccount , status) VALUES(?,?,?,?,?,?,?,?)",
+        [
+          userMainID,
+          senderAccount,
+          nftToken,
+          userTokenId,
+          senderAccountKey,
+          requestAmount,
+          "0X0000",
+          0,
+        ],
+        function (error, results, fields) {
+          if (error)
+            return res
+              .status(404)
+              .json({
+                message: "encountered error while inserting in SALES-ORDER",
+              });
+          res.status(200).json({ message: "sent successfully" });
+        }
+      );
+    }
+  );
+};
 
 const atomicBuyNFTWithNFT = async (req, res) => {
   //Atomic swap between a Hedera Token Service token and hbar
@@ -214,79 +236,74 @@ const atomicBuyNFTWithNFT = async (req, res) => {
   );
 };
 
+const atomicBuyNFTWithToken = async (req, res) => {
+  //Atomic swap between a Hedera Token Service token and hbar
+  const { usersId, receiverAccount, receiversAddressKey } = req.body;
+  connection.query(
+    "SELECT * FROM saleorder WHERE usersId = ?",
+    [usersId],
+    async function (error, results, fields) {
+      if (error)
+        return res.status(404).json({
+          message: "encountered error while inserting in SALES-ORDER",
+        });
+      // res.status(200).json({ message: "sent successfully" });
+      const senderAccount = results[0].senderAccount;
+      const nftToken = results[0].nftToken;
+      const userTokenId = results[0].userTokeId;
+      const senderAccountKey = results[0].senderAccountKey;
 
+      const atomicSwap = await new TransferTransaction()
+        .addHbarTransfer(receiverAccount, new Hbar(Number(-amount)))
+        .addHbarTransfer(senderAccount, new Hbar(Number(amount)))
+        .addTokenTransfer(nftToken, senderAccount, Number(-userTokenId))
+        .addTokenTransfer(nftToken, receiverAccount, Number(userTokenId))
+        .build(client);
 
-const atomicBuyNFTWithToken = async (req, res) => {//Atomic swap between a Hedera Token Service token and hbar
-  const { usersId , receiverAccount , receiversAddressKey } = req.body;
-        connection.query('SELECT * FROM saleorder WHERE usersId = ?',
-          [usersId]
-          ,
-          async function (error, results, fields) {
-            if (error)
-              return res
-                .status(404)
-                .json({
-                  message: "encountered error while inserting in SALES-ORDER",
-                });
-            // res.status(200).json({ message: "sent successfully" });
-            const senderAccount = results[0].senderAccount;
-            const nftToken = results[0].nftToken;
-            const userTokenId = results[0].userTokeId;
-            const senderAccountKey = results[0].senderAccountKey;
-
-            const atomicSwap = await new TransferTransaction()
-              .addHbarTransfer(receiverAccount, new Hbar(Number(-amount)))
-              .addHbarTransfer(senderAccount, new Hbar(Number(amount)))
-              .addTokenTransfer(nftToken, senderAccount, Number(-userTokenId))
-              .addTokenTransfer(nftToken, receiverAccount, Number(userTokenId))
-              .build(client);
-
-            //Sign the transaction with accountId1 and accountId2 private keys, submit the transaction to a Hedera network
-            const txId = await (
-              await (
-                await atomicSwap.sign(senderAccountKey)
-              ).sign(receiversAddressKey)
-            ).execute(client);
-            if (txId) {
-              res.status(200).json({ message: true });
-            }
-          }); 
-}
-
+      //Sign the transaction with accountId1 and accountId2 private keys, submit the transaction to a Hedera network
+      const txId = await (
+        await (
+          await atomicSwap.sign(senderAccountKey)
+        ).sign(receiversAddressKey)
+      ).execute(client);
+      if (txId) {
+        res.status(200).json({ message: true });
+      }
+    }
+  );
+};
 
 const transferHbar = async (req, res) => {
-  const { senderAddress, receiversAddress, amount } = req.body;
-  //Create the transfer transaction
-  if (!senderAddress || !receiversAddress || !amount)
-    return res
-      .status(201)
-      .json({
-        message:
-          "receiver address, senders address and amount can not be empty",
-      });
+  const { senderAddress, receiversAddress, amount, privateKey } = req.body;
+
+  const addressFrom = AccountId.fromString(senderAddress);
+  const privateKeys = PrivateKey.fromString(privateKey);
+  const accountWithPadding = await addressPadding(receiversAddress);
+
+  const amount_to_number = Number(amount);
   const transaction = new TransferTransaction()
-    .addHbarTransfer(senderAddress, new Hbar(Number(-amount)))
-    .addHbarTransfer(receiversAddress, new Hbar(Number(amount)));
+    .addHbarTransfer(addressFrom, new Hbar(-amount_to_number))
+    .addHbarTransfer(accountWithPadding, new Hbar(amount_to_number))
+    .freezeWith(client);
 
-  //Sign with the client operator key and submit the transaction to a Hedera network
-  const txId = await transaction.execute(client);
+  const transferTxSign = await transaction.sign(privateKeys);
+  const transferTxSubmit = await transferTxSign.execute(client);
 
-  //Request the receipt of the transaction
-  const receipt = await txId.getReceipt(client);
-
-  //Get the transaction consensus status
-  const transactionStatus = receipt.status;
-
-  console.log("The transaction consensus status is " + transactionStatus);
-  res
-    .status(200)
-    .json({
-      message: `${amount} has been transferred from ${senderAddress} to ${receiversAddress}`,
-    });
+  await res.status(200).json({
+    message: `${amount}HBar has been transferred from ${senderAddress} to ${receiversAddress}`,
+  });
 };
 
 const registration = async (req, res) => {
-  const { password, walletAddress, privateKey, seedPhrase , nickname , email , accountID} = req.body;
+  const {
+    password,
+    walletAddress,
+    privateKey,
+    seedPhrase,
+    nickname,
+    email,
+    accountID,
+  } = req.body;
   console.log(req.body);
   if (
     password == null ||
@@ -295,35 +312,190 @@ const registration = async (req, res) => {
     seedPhrase == null
   )
     return res.status(404).json({ message: "fields should not be empty" });
-  connection.query('INSERT INTO userscollections(password , walletAddress , privateKey , seedPhrase , nickname , email , accountID) VALUES(?,?,?,?,?,?,?)',[password , walletAddress , privateKey , seedPhrase , nickname , email , accountID], function(error,result,fields) {
-    if (error) return res.status(201).json({ message: "error occurred. data was not sent" });
-    res.status(200).json({ message: "Users Registration successful" });
-  })
-  // const createRegister = new mongoRegistration({
-  //   password,
-  //   walletAddress,
-  //   privateKey,
-  //   seedPhrase,
-  // });
-  // createRegister.save();
+  connection.query(
+    "INSERT INTO userscollections(password , walletAddress , privateKey , seedPhrase , nickname , email , accountID) VALUES(?,?,?,?,?,?,?)",
+    [
+      password,
+      walletAddress,
+      privateKey,
+      seedPhrase,
+      nickname,
+      email,
+      accountID,
+    ],
+    function (error, result, fields) {
+      if (error)
+        return res
+          .status(201)
+          .json({ message: "error occurred. data was not sent" });
+      res.status(200).json({ message: "Users Registration successful" });
+    }
+  );
+};
+
+const saveUsersNft = async (req, res) => {
+  const { usersId, usersNftId } = req.body;
+  const data = { usersid: usersId, nftid: usersNftId };
+  connection.query(
+    "INSERT INTO usernft(usersid , nftid) VALUES (?,?)",
+    [data.usersid, data.nftid],
+    function (error, results, fields) {
+      if (error) return console.log(error);
+      res.status(200).json({ message: "sent" });
+    }
+  );
+};
+
+const getUsersNft = async (req, res) => {
+  const { usersid } = req.body;
+  connection.query(
+    "SELECT * FROM usernft WHERE usersid = ?",
+    [usersid],
+    async function (error, results, fields) {
+      if (error) return console.log("get users nft", error);
+      res.status(200).json({ message: "data true ", data: results });
+    }
+  );
+};
+
+const usersNftInfo = async (req, res) => {
+  const nftId = NftId.fromString("0.0.14839086");
+  //Returns the info for the specified NFT ID
+  const nftInfos = await new TokenNftInfoQuery()
+    .setNftId(nftId)
+    .execute(client);
+  res.status(200).json({ message: "nft info", data: nftInfos });
+};
+
+const getIdByPassword = (req, res) => {
+  const { password } = req.body;
+  connection.query(
+    "SELECT id FROM userscollections WHERE password =?",
+    [password],
+    function (error, results, fields) {
+      if (error) return console.log("error found ", error);
+      res.status(200).json({ message: "found", data: results });
+    }
+  );
 };
 
 const usersLogin = async (req, res) => {
   const { password } = req.body;
-  connection.query('SELECT EXISTS(SELECT 1 FROM userscollections WHERE password = ?)', [password], (error, results, fields) => {
-    if (error) return res.status(404).json({ message: "Error occurred during query" });
-    let returnStatus = Object.values(results[0]);
-    connection.query('SELECT * FROM userscollections WHERE password=? LIMIT 1' , [password],async function (errors , resultsValues , fields){
-      res.status(200).json({message:"password data" , status:returnStatus[0] , data:resultsValues});
-    })
+  connection.query(
+    "SELECT EXISTS(SELECT 1 FROM userscollections WHERE password = ?)",
+    [password],
+    (error, results, fields) => {
+      if (error)
+        return res.status(404).json({ message: "Error occurred during query" });
+      let returnStatus = Object.values(results[0]);
+      connection.query(
+        "SELECT * FROM userscollections WHERE password=? LIMIT 1",
+        [password],
+        async function (errors, resultsValues, fields) {
+          res
+            .status(200)
+            .json({
+              message: "password data",
+              status: returnStatus[0],
+              data: resultsValues,
+            });
+        }
+      );
+    }
+  );
+};
 
-   // res.status(200).json({ message: "password checked" ,status :results });
-  })
-  // const loginCheck = await mongoRegistration.findOne({ password }).exec();
-  // if (!loginCheck)
+const transferNFT = async (req, res) => {
+  const {
+    senderId,
+    senderNFTId,
+    receiverId,
+    token_serial_number,
+    sendersPrivateKey,
+    receiverKeys,
+  } = req.body;
+
+  console.log(req.body);
+  const senderID = AccountId.fromString(senderId);
+  const receiversID = AccountId.fromString(receiverId);
+  const operatorID = PrivateKey.fromString(sendersPrivateKey);
+  const token_number = Number(token_serial_number);
+  const receiveKeys = PrivateKey.fromString(receiverKeys);
+
+  let associate = await new AccountUpdateTransaction()
+    .setAccountId(receiversID)
+    .setMaxAutomaticTokenAssociations(100)
+    .freezeWith(client)
+    .sign(receiveKeys);
+  let associateTxSub = await associate.execute(client);
+  let associat = await associateTxSub.getReceipt(client);
+  console.log(`Alice NFT Auto-Association: ${associat.status} \n`);
+
+  let tokenTransferTx = await new TransferTransaction()
+    .addNftTransfer(senderNFTId, token_number, senderID, receiversID)
+    .freezeWith(client)
+    .sign(operatorID);
+  let tokenTransferSubmit = await tokenTransferTx.execute(client);
+  let tokenTransferRx = await tokenTransferSubmit.getReceipt(client);
+  console.log(
+    `\n NFT transfer Treasury->Alice status: ${tokenTransferRx.status.toString()} \n`
+  );
+  res.status(200).json({ message: "transfered successfuly" });
+};
+
+const listNft = (req, res) => {
+  const {
+    usersId,
+    senderAccount,
+    nftToken,
+    userTokenId,
+    senderAccountKey,
+    requestAmount,
+    receiverAccount,
+    status,
+    nftImage,
+  } = req.body;
+  connection.query(
+    "SELECT * FROM saleorder WHERE userTokenId=?",
+    [userTokenId],
+    function (error, results, fields) {
+      if (results.length == 0) {
+        connection.query(
+          "INSERT INTO saleorder(usersId, senderAccount, nftToken,userTokenId, senderAccountKey, requestAmount, receiverAccount, status, nftImage) VALUES (?,?,?,?,?,?,?,?,?)",
+          [
+            usersId,
+            senderAccount,
+            nftToken,
+            userTokenId,
+            senderAccountKey,
+            requestAmount,
+            receiverAccount,
+            status,
+            nftImage,
+          ],
+          function (error, results, fields) {
+            res.status(200).json({ message: "Listed successfully" });
+          }
+        );
+      } else {
+        res.json({ message: "Already listed" });
+      }
+    }
+  );
+};
+
+const allListing = async (req, res) => {
+  connection.query(
+    "SELECT * FROM saleorder",
+    function (error, results, fields) {
+      console.log(results);
+      res.status(200).json({ message: "found", results });
+    }
+  );
 };
 
 module.exports = {
+  listNft,
   registration,
   usersLogin,
   createAccount,
@@ -333,5 +505,11 @@ module.exports = {
   getUsersAvailableNFTs,
   atomicBuyNFTWithToken,
   createSellOrder,
-  atomicBuyNFTWithNFT 
+  atomicBuyNFTWithNFT,
+  usersNftInfo,
+  getUsersNft,
+  saveUsersNft,
+  getIdByPassword,
+  transferNFT,
+  allListing,
 };
