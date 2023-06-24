@@ -44,11 +44,12 @@ Conclusion:
 Theme of Submission
 
 Empowering Seamless Digital Asset Management
+
  In the submission for the HashKeeper Wallet Extension for Web Browsers, the overarching theme is centered around empowering users with a seamless experience in managing their digital assets. The theme encompasses various aspects, including simplifying user interactions, enhancing security measures, and fostering accessibility to testnet tokens, NFT listing, and token transactions. The submission seeks to empower individuals and businesses in the target industry, enabling them to efficiently navigate the complexities of the Hadera network and effectively engage with digital assets. Through a user-friendly interface and robust functionality, the theme emphasizes the empowerment of users in their digital asset management journey, providing them with the necessary tools and resources to maximize their participation in the digital asset ecosystem.
 
 
 
-User Flow
+## User Flow
  
 
 
@@ -56,26 +57,36 @@ User Flow
 
 User Launches the Wallet Extension: 
 The user opens their web browser and activates the HashKeeper Wallet Extension. 
+
 Key Generation: 
+
 The extension automatically generates a public and private key pair for the user. 
 The generated keys are securely stored within the extension.
+
  Faucet Access: 
+
 The user requests testnet tokens from the faucet through the extension. 
 The extension communicates with the faucet API and receives the requested tokens. 
 The tokens are added to the user's wallet balance. 
+
 NFT Listing: 
+
 The user selects the option to list an NFT on the HashKeeper network. 
 The extension prompts the user to provide the necessary details of the NFT, such as metadata, pricing, and description. 
 The extension communicates with the Hadera network to create and list the NFT. 
 The NFT is now available for potential buyers. 
+
 Token Purchase:
+
  A buyer accesses the wallet extension and selects the option to browse available tokens. 
 The extension retrieves the list of tokens available for purchase from the Hadera network.
  The buyer selects a token of interest and views its details. 
 The buyer initiates a token purchase by specifying the desired quantity and confirming the transaction. 
 The extension communicates with the Hadera network to execute the token purchase. 
 The purchased tokens are transferred to the buyer's wallet.
+
  Token Transfer: 
+
 A user selects the option to transfer tokens from their wallet. 
 The user provides the recipient's account details and the desired token quantity. 
 The extension validates the transaction and prompts the user to confirm. 
@@ -83,9 +94,10 @@ The extension communicates with the Hadera network to execute the token transfer
 The transferred tokens are deducted from the user's wallet and added to the recipient's wallet.
 
 
-An overview of what problem is being addressed
+## An overview of what problem is being addressed
 
 Overview: 
+
 The HashKeeper Wallet Extension for Web Browsers addresses the pain points faced by individuals and businesses operating in the digital asset space, particularly those who interact with the Hadera network. The target industry includes cryptocurrency enthusiasts, NFT creators, traders, developers, and anyone seeking a user-friendly and secure solution to manage their digital assets.
 Problem Statement:
 1.	 Complexity and Accessibility:
@@ -123,7 +135,7 @@ Users can browse available tokens, view details, and securely initiate purchases
 By addressing these pain points and providing an intuitive, secure, and accessible platform, the HashKeeper Wallet Extension for Web Browsers aims to facilitate broader adoption of the Hadera network and empower individuals and businesses in their digital asset management endeavors.
 
 
-The industry/community the project is trying to help or benefit
+## The industry/community the project is trying to help or benefit
 
 The project aims to help and benefit the broader blockchain and digital asset community, including various industries and individuals engaged in cryptocurrency, NFTs, and decentralized finance. The specific industry/community the project targets includes:
 1.	Cryptocurrency Enthusiasts and Traders: 
@@ -143,31 +155,51 @@ The project caters to individuals interested in exploring the potential of block
 It offers a gateway to the Hadera network, enabling users to experience the benefits of decentralized networks and digital assets firsthand. 
 By serving these industry stakeholders and communities, the project aims to contribute to the growth and adoption of the Hadera network while empowering individuals and businesses to participate in the exciting world of blockchain and digital assets.
 
-				Future plans for the project
+##				Future plans for the project
+
 Enhanced Compatibility:
+
  The project aims to expand its compatibility with a wider range of web browsers, ensuring compatibility with popular options and accommodating user preferences. 
+
 Mobile Support:
+
 Recognizing the increasing importance of mobile devices, the project intends to develop a mobile version of the wallet extension, allowing users to manage their digital assets on the go. 
+
 Multi-Chain Integration: 
+
 To provide users with more options and flexibility, the project plans to integrate with other blockchain networks, enabling seamless management of assets across multiple chains. 
+
 Advanced Security Features: 
+
 The project aims to implement additional security measures, such as multi-factor authentication, hardware wallet integration, and improved key management practices, to ensure the highest level of asset protection.
+
 Staking and Governance: 
+
 The project envisions introducing staking functionalities, allowing users to participate in the network's consensus mechanism and earn rewards for securing the network. Additionally, the project plans to explore governance mechanisms to enable users to participate in decision-making processes related to the Hadera network.
+
 Continuous Improvements: 
+
 The project will prioritize ongoing improvements and updates based on user feedback, ensuring a seamless and user-centric experience through regular bug fixes, performance optimizations, and feature enhancements.
 
 Thought Process Behind the Project:
 
-The project team embarked on this endeavor with a clear understanding of the pain points and challenges faced by individuals and businesses in managing digital assets on the HashKeeper network. The thought process behind the project can be summarized as follows:
+The project team embarked on this endeavor with a clear understanding of the pain points and challenges faced by individuals and businesses in managing digital assets on the HashKeeper network. 
+
+## The thought process behind the project can be summarized as follows:
+
 User-Centric Approach: 
+
 The team recognized the need for a user-friendly solution that simplifies interactions with Hadera network. They aimed to create an extension that caters to both experienced users and newcomers, making it accessible and intuitive for all. 
+
 Streamlined Operations:
+
  The team identified the complexities associated with key generation, token transactions, and NFT listing as significant pain points. They sought to streamline these operations, automating key generation and providing a seamless experience for token transfers and NFT listing.
+
 Empowering NFT Creators and Buyers:
+
  Acknowledging the growing interest in NFTs, the team sought to empower NFT creators by simplifying the process of listing their assets on the HashKeeper network. They also aimed to create a platform for buyers to easily discover and purchase NFTs, expanding the reach and visibility of creators' digital collectibles.
 
-List Of Tech Stack
+## List Of Tech Stack
 
 1.	Programming Languages: 
 JavaScript: Used for front-end development and user interface interactions.
@@ -193,5 +225,4 @@ UI/UX Design Tools: Utilizing design tools like Figma or Sketch for creating vis
 Responsive Web Design: Ensuring the extension is responsive and accessible across various devices and screen sizes.
 
 
-Figma Link: https://www.figma.com/file/rUBfX2fOfKjrTLD7UMXX6w/Hashkeeper-%2Fcryptocurrency?type=design&node-id=3%3A16368&mode=design&t=fy9D2cAZDFdWIoNF-1# realhashkepper
-for hashkeeper jobs
+Figma Link: https://www.figma.com/file/rUBfX2fOfKjrTLD7UMXX6w/Hashkeeper-%2Fcryptocurrency?type=design&node-id=3%3A16368&mode=design&t=fy9D2cAZDFdWIoNF-1#
