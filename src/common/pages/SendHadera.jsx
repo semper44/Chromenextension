@@ -27,8 +27,7 @@ function SendHadera() {
                       <div className='w-11/12 flex flex-row justify-between items-center  border border-slate-300 rounded-md px-2'>
                           <input className='w-10/12 outline-none capitalize bg-transparent text-white h-10 rounded-md pr-3' placeholder='Enter name of recipient'/>
                           <div className="capitalize font-semibold w-fit rounded-full px-4 py-2 bg-[#e11584]/90 text-orange-500 cursor-pointer text-white">paste</div>
-                      </div>
-                      
+                      </div>                     
                   </div>
                   
                   <div className="w-full h-fit py-5 flex justify-start items-center">
