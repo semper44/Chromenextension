@@ -1,3 +1,0 @@
-1. step https://www.npmjs.com/package/vite-plugin-babel
-2. https://babeljs.io/docs/babel-plugin-syntax-jsx
-3. https://github.com/kentcdodds/babel-plugin-preval
