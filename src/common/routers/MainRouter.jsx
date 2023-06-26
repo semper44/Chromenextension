@@ -3,6 +3,7 @@ import React from 'react'
 import { MemoryRouter , Routes ,Route } from 'react-router-dom'
 import Home from '../pages/Home'
 import Governance from '../pages/Governance'
+import Loading from '../components/Loading'
 import NotFound from '../pages/NotFound'
 import Activities from '../pages/Activities'
 import SendHadera from '../pages/SendHadera'
@@ -16,23 +17,24 @@ import Charts from '../components/Charts'
 import Login from '../pages/Login'
 import NftSwap from '../pages/NftSwap'
 import IInput from '../pages/IInput'
+// import TokenSwap from '../pages/TokenSwap'
 function MainRouter() {
   return (
       <MemoryRouter>
           <Routes>
+              <Route path='/' element={<Welcome />} />
               <Route path='/home' element={<Home  />} />
-              <Route path='/chart' element={<Charts  />} />
-              <Route path='/' element={<Login/>} />
+              {/* <Route path='/chart' element={<Charts  />} /> */}
+              <Route path='/login' element={<Login/>} />
               <Route path='/nftswap' element={<NftSwap/>} />
               {/* <Route path='/nn' element={<IInput />} /> */}
-              <Route path='/welcome' element={<Welcome />} />
               <Route path='/register' element={<Register />} />
               <Route path='/seedphrase' element={<SeedPhrase />} />
               <Route path='/seedphrasevalidation' element={<SeedPhraseValidation />} />
               {/* <Route path='/accountname' element={<AccountName />} /> */}
               <Route path='/activities' element={<Activities />} /> 
               <Route path='/send' element ={<SendHadera/>} /> 
-              <Route path='/nft' element ={<Nfts/>} /> 
+              <Route path='/NFT' element ={<Nfts/>} /> 
               {/* <Route path='/progress' element ={<ProgressBar/>} />  */}
               <Route path='/governance' element ={<Governance/>} /> 
           </Routes>

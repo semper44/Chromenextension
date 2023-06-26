@@ -9,9 +9,9 @@ import * as S from '../pages/style/Styles'
 
 
 
-function SingleNft({setShow,setShowInput,showInput, show, showListInput, setShowListInput }) {
+function SingleNft({setShow, show, showListInput, setShowListInput }) {
     const [value, setValue] = useLocalStorage('singleNft', null);
-    console.log(setShow,setShowInput,showInput, show, );
+    console.log(setShowListInput );
     console.log(value);
   const navigate = useNavigate();
 
@@ -19,7 +19,7 @@ function SingleNft({setShow,setShowInput,showInput, show, showListInput, setShow
 
     <div className='bg-[#000000] rounded-2xl'>
             <div className='h-14 border-b border-b-slate-200 py-[1px] w-full flex items-center relative'>
-                <div onClick={() => setShow(!show)} className='absolute left-[15px] translate-y-[-50%] top-[50%] w-[30px] h-[30px] flex justify-center items-center border cursor-pointer border-slate-300/50 rounded-full '>
+                <div onClick={() => setShow(false)} className='absolute left-[15px] translate-y-[-50%] top-[50%] w-[30px] h-[30px] flex justify-center items-center border cursor-pointer border-slate-300/50 rounded-full '>
                     <MdClose size={20} className='text-white' />
                 </div>
                 <div className='flex-1 flex items-center justify-center text-center text-lg tracking-wider font-bold text-white'>INFO</div>
@@ -80,7 +80,7 @@ function SingleNft({setShow,setShowInput,showInput, show, showListInput, setShow
                                     </>
                                     :
                                     <>
-                                        <button onClick={() => setShowListInput(!showListInput)} className='h-[45px] w-full font-extrabold bg-[#00ff95] text-black rounded-lg text-sm'>
+                                        <button onClick={() => {setShowListInput(true); console.log("object");}} className='h-[45px] w-full font-extrabold bg-[#00ff95] text-black rounded-lg text-sm'>
                                             LIST
                                         </button>
                                     </>

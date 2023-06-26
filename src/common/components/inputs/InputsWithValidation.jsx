@@ -16,7 +16,7 @@ function InputsWithValidation({ inputName = null, setInputValue = null }) {
         <S.InputContainer className='w-full flex my-2 justify-center items-center  flex-col'>
           <GlobalStyling />
             <div className='flex w-11/12 lg:w-9/12 justify-start'>
-            <S.Label className='text-[10px] pb-1 font-semibold text-white/40 tracking-wider'>{inputName}</S.Label>  
+            <S.Label className='pl-5 text-[14px] pb-1 font-semibold text-white/40 tracking-wider'>{inputName}</S.Label>  
               </div>
             <S.Input onChange={setInputValue} className='w-[80%] h-7 outline-none text-sm px-1 border border-orange-200 rounded-sm' />
         </S.InputContainer>    

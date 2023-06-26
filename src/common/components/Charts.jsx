@@ -15,17 +15,17 @@ const data = [
 
 function Charts() {
   return (
-    <div className={styles.LineChartContainer}> 
-        <AreaChart width={150} height={80} data={data} tick={false} hide={true}>
+    <div> 
+        <AreaChart width={150} height={80} data={data} tick={false}>
         <defs>
             <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
-            <stop offset="95%" stopColor="#8884d8" stopOpacity={0} />
+            <stop offset="5%" stopColor="#e71d36" stopOpacity={0.8} />
+            <stop offset="40%" stopColor="#8884d8" stopOpacity={0.6} />
+            <stop offset="95%" stopColor="#00000030" stopOpacity={0.3} />
             </linearGradient>
         </defs>
-        <CartesianGrid strokeDasharray="5 1"  fillOpacity={0.9} tick={false} hide={true}/>
-        <XAxis hide={true} tick={false} />
-        <YAxis hide={true}  tick={false}/>
+        <XAxis hide={true} />
+        <YAxis hide={true}/>
         <Tooltip />
         {/* <Legend /> */}
         <Area type="monotone" dataKey="sales" fillOpacity={1} fill="url(#colorUv)" />

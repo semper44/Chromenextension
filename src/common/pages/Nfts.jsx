@@ -18,6 +18,7 @@ import axios from 'axios';
 import SingleNft from '../components/SingleNft';
 import Nothing from '../components/Nothing';
 import { ToastContainer, toast } from "react-toastify";
+import Loading from '../components/Loading';
 
 
 const yourNfts = [
@@ -31,6 +32,7 @@ function Nfts() {
     const[loading, setLoading]=useState(true)
     const [nftIds, setNftsIds] = useState({ nftid: "" });
     const [items , setItems] = useState();
+    const [showListInput, setShowListInput] = useState(false);
     const[data, setData]=useState("all")
     const [get_availableNfts, setGetAvailableNfts] = useState([]);
     const [oneNft, setOneNft] = useLocalStorage("singleNft", null);
@@ -201,12 +203,12 @@ function Nfts() {
 
         {link === "all" &&
           <div className="">
-           {!loading && <motion.div onClick={() => setShow(true)} className="cursor-pointer" initial={{ opacity: 0, width: 0 }} animate={{ opacity: 1, width: "100%" }} exit={{ opacity: 0, x: window.innerWidth, transition: { duration: 1 } }}>
+           {!loading ? <motion.div onClick={() => setShow(true)} className="cursor-pointer" initial={{ opacity: 0, width: 0 }} animate={{ opacity: 1, width: "100%" }} exit={{ opacity: 0, x: window.innerWidth, transition: { duration: 1 } }}>
                 {get_availableNfts.length >= 1 ?
                     <div className='w-full flex flex-col'>
                         <div className='grid grid-cols-2 gap-[10px] self-center'>
                             {get_availableNfts.map((el, key) =>
-                                <div key={key} onClick={() => {setShow(true)}} className='w-[140px] rounded-[25px] bg-gradient-to-br from-[#15dfee00] to-[#f0028500]'>
+                                <div key={key} onClick={() => {setShow(true); setOneNft(el)}} className='w-[140px] rounded-[25px] bg-gradient-to-br from-[#15dfee00] to-[#f0028500]'>
                                     <div className='h-fit w-full rounded-[25px] bg-[#121213] overflow-hidden'>
                                         <div className='h-fit w-[90%] mt-[7px] relative flex items-center mx-auto justify-center'>
                                             <img src={el.image} className='object-cover h-full w-full rounded-[20px]' alt="" />
@@ -222,7 +224,10 @@ function Nfts() {
                     </div>
                     :
                     <Nothing msg1={"No Nfts yet"} msg2={"Add NFT"} />}
-            </motion.div>}
+            </motion.div>:
+            <div className="pt-10">
+              <Loading />
+            </div> }
           </div>
         }
 
@@ -257,7 +262,7 @@ function Nfts() {
 
     </S.ScrollBar>
     <BottomSheet skipInitialTransition open={show} snapPoints={({ minHeight, maxHeight }) => [minHeight, maxHeight / 0.7]} className='--rsbs-bg-transparent' >
-    <SingleNft items={items} setShow={setShow} setShowInput={setShowInput} showInput={showInput} />
+    <SingleNft items={items} setShow={setShow} setShowListInput={setShowListInput} showListInput={showListInput}  showInput={showInput} />
 
     </BottomSheet>            
     </MainLayout>
