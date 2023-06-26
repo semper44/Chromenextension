@@ -15,9 +15,9 @@ function Welcome() {
         <GlobalStyling />
         <div className='h-[90%] w-full text-center relative'>
           <div className=" h-fit w-full text-rgb(0, 123, 255) tracking-wide text-lg font-bold items-center py-4 px-2 border-b border-slate-300/20 text-white">
-            Welcome to Project Wallet
+            WELCOME TO PROJECT WALLET
           </div>
-          <div className="tracking-wide font-semibold text-white text-[30px] pt-5 pb-3">Get started!</div>
+          <div className="tracking-wide font-semibold text-white text-[20px] pt-5 pb-3">Get started!</div>
           <div className=" text-sm tracking-wide font-semibold text-[#e5d420] bg-[#161616] rounded-lg p-2">
             Create  a new wallet or import existing wallet
           </div>

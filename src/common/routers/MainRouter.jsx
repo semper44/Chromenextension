@@ -14,22 +14,22 @@ import AccountName from '../pages/AccountName'
 import SeedPhraseValidation from '../pages/SeedPhraseValidation'
 import Charts from '../components/Charts'
 import Login from '../pages/Login'
+import NftSwap from '../pages/NftSwap'
 import IInput from '../pages/IInput'
-import NftSwap from '../pages/NftSwap';
 function MainRouter() {
   return (
       <MemoryRouter>
           <Routes>
-              <Route path='/home' element={<Home  />} />
-              <Route path='/chart' element={<Charts  />} />
-              <Route path='/' element={<Login/>} />
+              <Route path='/home' element={<Home />} />
+              <Route path='/chart' element={<Charts />} />
+              <Route path='/login' element={<Login />} />
+              <Route path='/nftswap' element={<NftSwap/>} />
               {/* <Route path='/nn' element={<IInput />} /> */}
-              <Route path='/nftswap' element={<NftSwap />} />
-              <Route path='/welcome' element={<Welcome />} />
+              <Route path='/home' element={<Welcome />} />
               <Route path='/register' element={<Register />} />
               <Route path='/seedphrase' element={<SeedPhrase />} />
               <Route path='/seedphrasevalidation' element={<SeedPhraseValidation />} />
-              <Route path='/accountname' element={<AccountName />} />
+              {/* <Route path='/accountname' element={<AccountName />} /> */}
               <Route path='/activities' element={<Activities />} /> 
               <Route path='/send' element ={<SendHadera/>} /> 
               <Route path='/nfts' element ={<Nfts/>} /> 

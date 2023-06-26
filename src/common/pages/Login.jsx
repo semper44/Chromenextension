@@ -8,9 +8,10 @@ import InputsWithValidation from "../components/inputs/InputsWithValidation";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import useLocalStorage from "use-local-storage";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 function Login() {
+  const { pathname } = useLocation();
   const [saveUsersDetails, setSavedUsersDetails] = useLocalStorage(
     "usersDetails",
     { valueData: {}, isLoggedin: false }
@@ -32,13 +33,16 @@ function Login() {
   }, [saveUsersDetails]);
 
   const login = async () => {
-    if (getLogin.password !== "" && getLogin.confirmPassword !== "" && getLogin.password == getLogin.confirmPassword) {
+    if (
+      getLogin.password !== "" &&
+      getLogin.confirmPassword !== "" &&
+      getLogin.password == getLogin.confirmPassword
+    ) {
       const response = await axios
         .post(`${import.meta.env.VITE_REACT_APP_MAIN_ENDPOINT}login`, {
           password: getLogin.password,
         })
         .then((returnedData) => returnedData.data);
-      console.log(response)
       if (response.status == 0) {
         toast("🤝  User not found", {
           position: "top-right",
@@ -73,6 +77,8 @@ function Login() {
       }
     }
   };
+
+  console.log(pathname)
   return (
     <MainLayout>
       <GlobalStyling />
@@ -84,27 +90,26 @@ function Login() {
         <div className="text-sm my-2 text-center tracking-wide font-semibold text-[#f3cb17] bg-[#161616] rounded-lg p-2">
           Create a new account to continue with our application
         </div>
-
-        <div className="w-full h-fit flex items-center justify-center flex-col">
-          <InputsWithValidation
+        
+        <div className="w-full h-[390px] flex items-center justify-center flex-col">
+            <InputsWithValidation
             inputName={"Enter Password"}
             setInputValue={(e) =>
-              setGetLogin((previousData) => ({
+                setGetLogin((previousData) => ({
                 ...previousData,
                 password: e.target.value,
-              }))
+                }))
             }
-          />
-          <InputsWithValidation
+            />
+            <InputsWithValidation
             inputName={"Confirm Password"}
             setInputValue={(e) =>
-              setGetLogin((previousData) => ({
+                setGetLogin((previousData) => ({
                 ...previousData,
                 confirmPassword: e.target.value,
-              }))
+                }))
             }
-          />
-          
+            />
           <div
             onClick={() => login()}
             className={"w-[90%] h-fit cursor-pointer mt-4 bg-[#03f584] py-[10px] px-3 rounded-md text-md font-semibold text-white text-center"}

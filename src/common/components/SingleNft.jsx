@@ -1,40 +1,104 @@
-import React from 'react';
-import { motion } from "framer-motion"
-import { MdClose } from 'react-icons/md';
-function SingleNft({ items, setShow, setShowInput, showInput }) {
-  return (
-    <div>
-      <div className='w-full h-full backdrop-blur-2xl bg-black/80 px-2 pt-3 pb-5'>
-        <div className='h-fit w-full flex items-center '>
-          <div onClick={() => { setShow(false); setShowInput(false) }} className='w-8 p-2 h-8 ml-1 mr-14 flex justify-center items-center border border-slate-300/50 rounded-full '>
-            <MdClose size={20} className='text-white cursor-pointer' />
-          </div>
-        </div>
-        <div className='h-fit w-full text-center'>
-          <div className='w-full flex justify-center'>
-            <img src="../hederaImage.png" className='h-20 w-20 rounded-xl' />
-          </div>
-          <div className=" text-sm tracking-wide font-semibold text-gray-200">Bored APe Yatcht<span className="pl-2 text-rgb(0, 123, 255) tracking-wide text-lg font-bold">you</span></div>
-          <div className=" text-sm tracking-wide font-semibold text-gray-200">Owned by<span className="pl-2 text-rgb(0, 123, 255) tracking-wide text-lg font-bold">you</span></div>
-          <div className=" text-sm tracking-wide font-semibold text-gray-200">Floor Price<span className="pl-2 text-rgb(0, 123, 255) tracking-wide text-lg font-bold">0.00</span></div>
-          <div className=" text-sm tracking-wide font-semibold text-gray-200">Floor Sale<span className="pl-2 text-rgb(0, 123, 255) tracking-wide text-lg font-bold">0.00</span></div>
-          {!showInput && <motion.div className='w-full flex justify-center'
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0, transition: { duration: 1 } }}
-          >
-            <div onClick={() => setShowInput(!showInput)} className="w-[80%] h-fit text-md  font-semibold tracking-wider text-white bg-[#e11584]/90 mb-3 mt-2 p-3 rounded-md cursor-pointer">Swap</div>
-          </motion.div>}
-        </div>
-        {showInput && <><div className='w-full flex justify-center pt-3'>
-          <input className='w-[80%] pt-4 pb-4 outline-none capitalize bg-transparent text-white h-10 rounded-md pl-3 border border-slate-300/50' placeholder='Enter amount' />
-        </div>
-          <div className='w-full flex justify-center'>
-            <div onClick={() => setShowInput(!showInput)} className="w-[80%] h-fit text-md  font-semibold tracking-wider text-white bg-[#e11584]/90 mb-3 mt-2 p-3 rounded-md text-center cursor-pointer">Swap</div>
-          </div>
-        </>}
-      </div>
+/* eslint-disable no-unused-vars */
+import React from 'react'
+import { MdClose } from "react-icons/md";
+import { useNavigate } from 'react-router-dom';
+import useLocalStorage from "use-local-storage";
+import * as S from '../pages/style/Styles'
+
+
+
+
+
+function SingleNft({setShow,setShowInput,showInput, show, showListInput, setShowListInput }) {
+    const [value, setValue] = useLocalStorage('singleNft', null);
+    console.log(setShow,setShowInput,showInput, show, );
+    console.log(value);
+  const navigate = useNavigate();
+
+    return (
+
+    <div className='bg-[#000000] rounded-2xl'>
+            <div className='h-14 border-b border-b-slate-200 py-[1px] w-full flex items-center relative'>
+                <div onClick={() => setShow(!show)} className='absolute left-[15px] translate-y-[-50%] top-[50%] w-[30px] h-[30px] flex justify-center items-center border cursor-pointer border-slate-300/50 rounded-full '>
+                    <MdClose size={20} className='text-white' />
+                </div>
+                <div className='flex-1 flex items-center justify-center text-center text-lg tracking-wider font-bold text-white'>INFO</div>
+            </div>
+            <S.ScrollBar className='w-full h-[500px] overflow-y-scroll p-1'>
+
+                <div className='w-full flex item-center justify-center py-7'>
+                    <div className='flex flex-col items-center px-2'>
+
+                        <div id='NFT IMAGE' className='h-[200px] w-[200px] mx-auto mb-[20px] rounded-[25px] bg-gradient-to-br from-[#000000] to-[#000000]'>
+                            <div className='h-full w-full relative flex items-center mx-auto justify-center'>
+                                <img src={value.image} className='object-cover h-full w-full rounded-[20px]' alt="" />
+                            </div>
+                        </div>
+                        <div id='MAIN CONTAINER' className='flex flex-col h-fit hover:bg-[#00ff9513] bg-[#161616] w-[95%] rounded-xl pt-3'>
+
+                            <div className='w-full h-fit flex flex-col gap-2 items-center justify-center'>
+                                <p className='flex px-3 font-bold text-xs text-[#ffffff] justify-between items-center w-full'>NAME :
+                                    <span className='ml-3 text-[#d4d4d4] font-thin'>
+                                        {value.name}
+                                    </span>
+                                </p>
+                                <p className='flex px-3 font-bold text-xs text-[#ffffff] justify-between items-center w-full'>TOKEN ID :
+                                    <span className='ml-3 text-[#d4d4d4] font-thin'>
+                                        {value.token_ids}
+                                    </span>
+                                </p>
+                                <p className='flex px-3 font-bold text-xs text-[#ffffff] justify-between items-center w-full'>CREATOR :
+                                    <span className='ml-3 text-[#d4d4d4] font-thin'>
+                                        {value.creator}
+                                    </span>
+                                </p>
+                                <p className='w-full bg-[#000000] h-7 rounded-b-[10px] flex items-center'>
+                                    <p className='flex px-3 text-xs font-bold text-[#ffffff] justify-between items-center w-full'>OWNER
+                                        <span className='ml-3 text-[#9c9c9c] font-thin truncate tracking-[0.5px]'>
+                                            {value.owner}
+                                        </span>
+                                    </p>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div id="DESCRIPTION" className='w-[95%] my-3 h-fit p-2 bg-[#171717] border-[1px] border-[#181717] text-white rounded-lg'>
+                            <p className='text-[11px] font-thin'>{value.description}</p>
+                        </div>
+
+                        <div id='BUTTONS' className='h-fit w-[95%] flex-col gap-2 text-white'>
+                            <div className='w-full flex flex-col gap-[4px] py-1'>
+                                {showListInput && <input type="text" placeholder='Enter Amount' className='h-[45px] w-full border-[1px] text-white focus:outline-0 px-3 bg-transparent border-[#131313] rounded-lg' />}
+                                {showListInput ?
+                                    <>
+                                        <button onClick={() => setShowListInput(!showListInput)} className='h-[45px] w-full font-extrabold bg-[#00ff95] text-black rounded-lg text-sm'>
+                                            PROCEED TO LIST
+                                        </button>
+                                        <button onClick={() => setShowListInput(!showListInput)} className='h-[45px] w-full font-extrabold bg-[#ff0000] text-white rounded-lg text-sm'>
+                                            CANCEL
+                                        </button>
+                                    </>
+                                    :
+                                    <>
+                                        <button onClick={() => setShowListInput(!showListInput)} className='h-[45px] w-full font-extrabold bg-[#00ff95] text-black rounded-lg text-sm'>
+                                            LIST
+                                        </button>
+                                    </>
+                                }
+                            </div>
+                            <div className='w-full flex flex-col gap-[4px]'>
+                                {!showListInput &&
+                                    <button onClick={() => navigate('/nftswap')} className='h-[45px] w-full font-extrabold bg-[#fcbe04] text-black rounded-lg flex items-center justify-center text-sm'>
+                                        TRANSFER
+                                    </button>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </S.ScrollBar>
     </div>
+
   )
 }
 

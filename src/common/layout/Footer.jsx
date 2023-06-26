@@ -6,23 +6,22 @@ import { MdFlashOn } from "react-icons/md";
 import { GlobalStyling } from '../globalStyles/Global';
 import { Link, useLocation  } from 'react-router-dom';
 // import Activities from '../pages/Activities';
+// 
 
 function Footer() {
-  const[nav, setNav]=useState(null)
+  const[nav, setNav] = useState(null)
     // const navigate = useNavigate();
 
     // Background script (background.js)
     const location = useLocation();
     const { pathname } = location;
-    console.log(pathname);
     function activities(){
       setNav("activities")
       // navigate("/activities")
-    }
-
-    console.log(nav);
+  }
+  
   return (
-    <div className='w-[100%] h-fit py-1 flex items-center justify-center pop-up bg-[#0d0d0e00] bg-opacity-80 backdrop-filter rounded-[10px] absolute bottom-0 right-0'>
+    <div className={`${pathname == '/' && 'hidden'} ${pathname == '/seedphrasevalidation' && 'hidden'} w-[100%] h-fit py-1 flex items-center justify-center pop-up bg-[#0d0d0e00] bg-opacity-80 backdrop-filter rounded-[10px] absolute bottom-0 right-0`}>
       <GlobalStyling />
       <div className='h-full w-[98%] rounded-[10px] bg-[#121213] py-3 text-md font-base tracking-wide text-slate-700 flex flex-row justify-evenly items-center space-x-3'>
         <Link to={'/'}>
